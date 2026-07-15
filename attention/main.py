@@ -19,7 +19,7 @@ class flashAttetionmodule:
 
 
 
-    def calculate(self):
+    def calculate(self) -> float:
         for i in range(0,len(self.scores),self.block_size):
 
             block_values = self.values[i:i+self.block_size]
@@ -34,7 +34,7 @@ class flashAttetionmodule:
 
             self.alpha = math.exp(self.prev_max - new_max)
 
-            weights = [math.exp(_-new_max) for _ in block_scores ]
+            weights = [math.exp(score - new_max) for score in block_scores ]
             
             self.denominator = sum(weights)
             self.sum_weighted = sum([weights[i] * block_values[i] for i in range(len(block_values))])
@@ -53,6 +53,7 @@ class flashAttetionmodule:
         return self.sum_weighted / self.denominator
       
 if __name__=="__main__":
+
   attn = flashAttetionmodule([10,20,30,40,50,60],[2,1,3,0,-1,4],2)
   
   print(f"{attn.calculate():.4f}")
